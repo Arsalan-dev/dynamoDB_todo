@@ -1,0 +1,147 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-tododynamo-dev-111532-authRole",
+      "UnauthRoleArn": "arn:aws:iam::522249388325:role/amplify-tododynamo-dev-111532-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::522249388325:role/amplify-tododynamo-dev-111532-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-tododynamo-dev-111532-deployment",
+      "UnauthRoleName": "amplify-tododynamo-dev-111532-unauthRole",
+      "StackName": "amplify-tododynamo-dev-111532",
+      "StackId": "arn:aws:cloudformation:eu-central-1:522249388325:stack/amplify-tododynamo-dev-111532/991c9150-4f8e-11ed-aff7-02e290470952",
+      "AmplifyAppId": "d2744e835j2us3",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-tododynamo-dev-111532-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    }
+  },
+  "auth": {
+    "tododynamob230d3a6": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-tododynamo-dev-111532-deployment/amplify-cfn-templates/auth/tododynamob230d3a6-cloudformation-template.json",
+        "logicalId": "authtododynamob230d3a6"
+      },
+      "lastPushTimeStamp": "2022-10-20T13:02:33.694Z",
+      "output": {
+        "UserPoolId": "eu-central-1_NdED6O46a",
+        "AppClientIDWeb": "74ule6oufokddekhm3t566e05c",
+        "AppClientID": "7o36e4vh91od92sdg693p04c5a",
+        "IdentityPoolId": "eu-central-1:590f3cf8-6cbe-45ed-875b-e09d9a55426b",
+        "UserPoolArn": "arn:aws:cognito-idp:eu-central-1:522249388325:userpool/eu-central-1_NdED6O46a",
+        "IdentityPoolName": "tododynamob230d3a6_identitypool_b230d3a6__dev",
+        "UserPoolName": "tododynamob230d3a6_userpool_b230d3a6"
+      },
+      "lastPushDirHash": "mjcEHQdEI86nXd6NQ6Kwh1ytX90="
+    }
+  },
+  "storage": {
+    "todosdb": {
+      "service": "DynamoDB",
+      "providerPlugin": "awscloudformation",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-tododynamo-dev-111532-deployment/amplify-cfn-templates/storage/todosdb-cloudformation-template.json",
+        "logicalId": "storagetodosdb"
+      },
+      "lastPushTimeStamp": "2022-10-20T13:02:33.697Z",
+      "output": {
+        "PartitionKeyName": "id",
+        "Region": "eu-central-1",
+        "Arn": "arn:aws:dynamodb:eu-central-1:522249388325:table/todosdb-dev",
+        "StreamArn": "arn:aws:dynamodb:eu-central-1:522249388325:table/todosdb-dev/stream/2022-10-19T09:43:00.912",
+        "PartitionKeyType": "S",
+        "Name": "todosdb-dev"
+      },
+      "lastPushDirHash": "vZP0js1kxsaoIB4iyegv2fyrS9E="
+    }
+  },
+  "function": {
+    "todosLambda": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "todosdb",
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "attributeEnvMap": {
+            "Name": "TABLE_NAME",
+            "Arn": "TABLE_ARN"
+          }
+        }
+      ],
+      "lastBuildTimeStamp": "2022-10-20T13:01:29.571Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2022-10-20T13:01:30.108Z",
+      "distZipFilename": "todosLambda-625355626342554d7379-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-tododynamo-dev-111532-deployment",
+        "s3Key": "amplify-builds/todosLambda-625355626342554d7379-build.zip"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-tododynamo-dev-111532-deployment/amplify-cfn-templates/function/todosLambda-cloudformation-template.json",
+        "logicalId": "functiontodosLambda"
+      },
+      "lastPushTimeStamp": "2022-10-20T13:02:33.882Z",
+      "output": {
+        "Region": "eu-central-1",
+        "Arn": "arn:aws:lambda:eu-central-1:522249388325:function:todosLambda-dev",
+        "Name": "todosLambda-dev",
+        "LambdaExecutionRole": "tododynamoLambdaRole2a7a4c26-dev"
+      },
+      "lastPushDirHash": "GOCcMqZEIjM5bE4z0XAVi+xYV2E="
+    }
+  },
+  "api": {
+    "todosApi": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "todosLambda",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ],
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-tododynamo-dev-111532-deployment/amplify-cfn-templates/api/todosApi-cloudformation-template.json",
+        "logicalId": "apitodosApi"
+      },
+      "lastPushTimeStamp": "2022-10-20T13:02:33.701Z",
+      "output": {
+        "ApiName": "todosApi",
+        "RootUrl": "https://7ozifojwda.execute-api.eu-central-1.amazonaws.com/dev",
+        "ApiId": "7ozifojwda"
+      },
+      "lastPushDirHash": "M2F9h2wvDp8Qh2y6n0FnHVVGfjg="
+    }
+  }
+}
